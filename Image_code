@@ -1,0 +1,61 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Create a blank canvas for the image
+width = 400
+height = 300
+channels = 3
+image = np.zeros((height, width, channels), dtype=np.uint8)
+
+# Setting up the night sky
+# Dark blue color
+image[:, :, 0] = 10
+image[:, :, 1] = 20
+image[:, :, 2] = 50
+
+# Moon
+moon_radius = 40
+moon_center = (100, 100)  # (y, x) coordinates
+moon_color = (230, 230, 230)  # Light gray
+
+# Calculate the distance from the moon center for each pixel
+y_coords, x_coords = np.ogrid[:height, :width]
+distance = np.sqrt((x_coords - moon_center[1]) ** 2 + (y_coords - moon_center[0]) ** 2)
+
+# Create a circular mask for the moon
+moon_mask = distance <= moon_radius
+
+# Apply the moon color to the pixels within the mask
+image[moon_mask] = moon_color
+
+# Stars
+num_stars = 200
+star_positions_y = np.random.randint(0, height, num_stars)
+star_positions_x = np.random.randint(0, width, num_stars)
+
+star_colors = (255, 255, 255)  # White
+
+for y, x in zip(star_positions_y, star_positions_x):
+    image[y, x] = star_colors
+
+# Snow
+num_snowflakes = 500
+snowflake_positions_y = np.random.randint(0, height, num_snowflakes)
+snowflake_positions_x = np.random.randint(0, width, num_snowflakes)
+
+snowflake_colors = (255, 255, 255)  # White
+
+for y, x in zip(snowflake_positions_y, snowflake_positions_x):
+    image[y, x] = snowflake_colors
+
+# Snow-covered ground
+image[200:, :, 0] = 255
+image[200:, :, 1] = 255
+image[200:, :, 2] = 255
+
+
+
+# Display the image
+plt.imshow(image)
+plt.axis('off')
+plt.show()
